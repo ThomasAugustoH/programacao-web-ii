@@ -73,4 +73,8 @@ public class FuncionarioService {
     public List<Funcionario> searchByDepto(Integer pIdDepartamento) {
         return funcionarioRepository.searchByDepto(pIdDepartamento);
     }
+
+    public List<Funcionario> searchByNome(String pNome) {
+        return funcionarioRepository.searchByNome(pNome);
+    }
 }

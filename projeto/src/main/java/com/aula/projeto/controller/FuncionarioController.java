@@ -41,6 +41,11 @@ public class FuncionarioController {
     public ResponseEntity<List<Funcionario>> searchByDepto(@PathVariable Integer pIdDepartamento) {
         return ResponseEntity.ok().body(funcionarioService.searchByDepto(pIdDepartamento));
     }
+
+    @GetMapping("/nome/{pNome}")
+    public ResponseEntity<List<Funcionario>> searchByNome(@PathVariable String pNome) {
+        return ResponseEntity.ok().body(funcionarioService.searchByNome(pNome));
+    }
     
 
     @PostMapping(value="/{pIdDepartamento}")

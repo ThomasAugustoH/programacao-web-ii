@@ -40,7 +40,7 @@ public class Funcionario implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="id_depto")
-    @JsonIgnore
+    @JsonIgnore // Evitar que funcionario e o departamento fiquem se chamando no JSON
     private Departamento departamentoFunc;
 }
 

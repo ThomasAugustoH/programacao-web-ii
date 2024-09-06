@@ -12,4 +12,7 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario,Integer
 
     @Query(value = "SELECT id_funcionario, email, nm_funcionario, id_depto FROM funcionario WHERE id_depto = :pIdDepartamento ORDER BY nm_funcionario", nativeQuery = true)
     List<Funcionario> searchByDepto(@Param("pIdDepartamento") Integer pIdDepartamento);
+
+    @Query(value="SELECT id_funcionario, email, nm_funcionario, id_depto FROM funcionario WHERE nm_funcionario LIKE '%'||upper(:pNome)||'%' ORDER BY nm_funcionario", nativeQuery = true)
+    List<Funcionario> searchByNome(@Param("pNome") String pNome);
 }
