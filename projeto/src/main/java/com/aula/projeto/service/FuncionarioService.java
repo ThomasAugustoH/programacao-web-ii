@@ -71,6 +71,22 @@ public class FuncionarioService {
     }
 
     public List<Funcionario> searchByDepto(Integer pIdDepartamento) {
+
+        departamentoRepository
+        .findById(pIdDepartamento)
+        .orElseThrow(
+            () -> new com.aula.projeto.exception.NoSuchElementException(
+                "Departamento " + pIdDepartamento + " não encontrado!")
+        );
+
+        List<Funcionario> funcionarios = funcionarioRepository.searchByDepto(pIdDepartamento);
+
+        if (funcionarios.isEmpty()) {
+            throw new com.aula.projeto.exception.NoSuchElementException(
+                "Departamento " + pIdDepartamento + " não possui funcionários!"
+            );
+        }
+
         return funcionarioRepository.searchByDepto(pIdDepartamento);
     }
 

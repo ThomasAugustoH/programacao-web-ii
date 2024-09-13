@@ -38,6 +38,15 @@ public class DisciplinaService {
         vAlunos.add(vAluno);
         vDisciplina.setAlunos(vAlunos);
 
-        return disciplinaRepository.save(vDisciplina);
+        try {
+            vDisciplina = disciplinaRepository.save(vDisciplina);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new com.aula.projeto.exception.DataIntegrityViolationException
+            ("Aluno " + vAluno.getNmAluno() + " já está matriculado na disciplina " 
+            + vDisciplina.getNmDisciplina() + "!");
+        }
+        
+
+        return vDisciplina;
     } 
 }

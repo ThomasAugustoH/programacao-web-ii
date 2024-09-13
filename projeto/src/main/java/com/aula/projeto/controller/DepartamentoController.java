@@ -37,7 +37,13 @@ public class DepartamentoController {
 
     @GetMapping("/{pIdDepto}")
     public ResponseEntity<Departamento> findById(@PathVariable Integer pIdDepto) {
-        Departamento vDepartamento = deptoRepository.findById(pIdDepto).orElseThrow();
+        Departamento vDepartamento = deptoRepository
+        .findById(pIdDepto)
+        .orElseThrow(
+            () -> new com.aula.projeto.exception.NoSuchElementException(
+                "Departamento " +pIdDepto + " não encontrado!")
+        );
+
         return ResponseEntity.ok().body(vDepartamento);
     }
 
@@ -50,9 +56,14 @@ public class DepartamentoController {
         (vURI).body(pDepartamento);
     }
 
-    @PutMapping("/{IdDepto}")
-    public ResponseEntity<Departamento> updDepto(@PathVariable Integer IdDepto, @RequestBody Departamento pDepartamento) {
-        Departamento vDeptoAtual = deptoRepository.findById(IdDepto).orElseThrow();
+    @PutMapping("/{pIdDepto}")
+    public ResponseEntity<Departamento> updDepto(@PathVariable Integer pIdDepto, @RequestBody Departamento pDepartamento) {
+        Departamento vDeptoAtual = deptoRepository
+        .findById(pIdDepto)
+        .orElseThrow(
+            () -> new com.aula.projeto.exception.NoSuchElementException(
+                "Departamento " +pIdDepto + " não encontrado!")
+        );
 
         if(pDepartamento.getNmDepto() != null) {
             vDeptoAtual.setNmDepto(pDepartamento.getNmDepto());
@@ -70,9 +81,20 @@ public class DepartamentoController {
     @DeleteMapping("/{pIdDepto}")
     public ResponseEntity<Void> delDepartamento(@PathVariable Integer pIdDepto) {
 
-        deptoRepository.findById(pIdDepto).orElseThrow();
+        Departamento vDepto = deptoRepository
+        .findById(pIdDepto)
+        .orElseThrow(
+            () -> new com.aula.projeto.exception.NoSuchElementException(
+                "Departamento " +pIdDepto + " não encontrado!")
+        );
 
-        deptoRepository.deleteById(pIdDepto);
+        try {
+            deptoRepository.deleteById(pIdDepto);
+        }
+        catch(org.springframework.dao.DataIntegrityViolationException e) {
+            throw new com.aula.projeto.exception.DataIntegrityViolationException
+            ("Departamento " +vDepto.getNmDepto() + " possui funcionários alocados. Não pode ser excluído!");
+        }
 
         return ResponseEntity.ok().body(null);
     }
